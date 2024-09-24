@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Windows;
 using ManagedCommon;
 using Microsoft.PowerLauncher.Telemetry;
 using Microsoft.PowerToys.Settings.UI.Helpers;
@@ -20,12 +21,26 @@ namespace Microsoft.PowerToys.Settings.UI
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : WindowEx
+    public sealed partial class MainWindow : WindowEx, IDisposable
     {
+        private ETWTrace etwTrace;
+
+        private bool _disposed;
+
         public MainWindow(bool createHidden = false)
         {
+            etwTrace = new ETWTrace();
+            int i = 0;
+            while (i < 3)
+            {
+                System.Threading.Thread.Sleep(2000);
+                i++;
+            }
+
             var bootTime = new System.Diagnostics.Stopwatch();
             bootTime.Start();
+
+            etwTrace.Start();
 
             App.ThemeService.ThemeChanged += OnThemeChanged;
             App.ThemeService.ApplyTheme();
@@ -210,6 +225,7 @@ namespace Microsoft.PowerToys.Settings.UI
             if (App.GetOobeWindow() == null)
             {
                 App.ClearSettingsWindow();
+                Dispose();
             }
             else
             {
@@ -239,6 +255,27 @@ namespace Microsoft.PowerToys.Settings.UI
         internal void EnsurePageIsSelected()
         {
             ShellPage.EnsurePageIsSelected();
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                etwTrace?.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -454,6 +454,7 @@ ETW
 EUQ
 eurochange
 eventlog
+EVENTTAG
 eventvwr
 everytime
 evt
@@ -1168,6 +1169,7 @@ phwnd
 pici
 pidl
 PIDLIST
+pii
 PINDIR
 pinfo
 pinvoke

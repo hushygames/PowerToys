@@ -509,6 +509,16 @@
         <decimal value="0" />
       </disabledValue>
     </policy>
+    <policy name="AllowDiagnosticData" class="Both" displayName="$(string.AllowDiagnosticData)" explainText="$(string.AllowDiagnosticDataDescription)" key="Software\Policies\PowerToys" valueName="AllowDataDiagnostics">
+      <parentCategory ref="GeneralSettings" />
+      <supportedOn ref="SUPPORTED_POWERTOYS_0_84_0" />
+      <enabledValue>
+        <decimal value="1" />
+      </enabledValue>
+      <disabledValue>
+        <decimal value="0" />
+      </disabledValue>
+    </policy>
     <policy name="PowerToysRunAllPluginsEnabledState" class="Both" displayName="$(string.PowerToysRunAllPluginsEnabledState)" explainText="$(string.PowerToysRunAllPluginsEnabledStateDescription)" key="Software\Policies\PowerToys" valueName="PowerLauncherAllPluginsEnabledState">
       <parentCategory ref="PowerToysRun" />
       <supportedOn ref="SUPPORTED_POWERTOYS_0_75_0" />

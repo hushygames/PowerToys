@@ -11,6 +11,7 @@ namespace Microsoft.PowerToys.Telemetry
     /// <summary>
     /// Telemetry helper class for PowerToys.
     /// </summary>
+    [EventSource(Name = "Microsoft.PowerToys")]
     public class PowerToysTelemetry : TelemetryBase
     {
         /// <summary>
@@ -37,14 +38,17 @@ namespace Microsoft.PowerToys.Telemetry
         public void WriteEvent<T>(T telemetryEvent)
             where T : EventBase, IEvent
         {
-            this.Write<T>(
-                telemetryEvent.EventName,
-                new EventSourceOptions()
-                {
-                    Keywords = ProjectKeywordMeasure,
-                    Tags = ProjectTelemetryTagProductAndServicePerformance,
-                },
-                telemetryEvent);
+            if (DataDiagnosticsSettings.GetEnabledValue())
+            {
+                this.Write<T>(
+                    telemetryEvent.EventName,
+                    new EventSourceOptions()
+                    {
+                        Keywords = ProjectKeywordMeasure,
+                        Tags = ProjectTelemetryTagProductAndServicePerformance,
+                    },
+                    telemetryEvent);
+            }
         }
     }
 }

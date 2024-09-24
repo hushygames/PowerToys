@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Interop;
 
 using ManagedCommon;
+using Microsoft.PowerToys.Telemetry;
 using WorkspacesEditor.Utils;
 using WorkspacesEditor.ViewModels;
 
@@ -24,8 +25,12 @@ namespace WorkspacesEditor
 
         private static MainPage _mainPage;
 
+        private ETWTrace etwTrace = new ETWTrace();
+
         public MainWindow(MainViewModel mainViewModel)
         {
+            etwTrace.Start();
+
             MainViewModel = mainViewModel;
             mainViewModel.SetMainWindow(this);
 
@@ -74,6 +79,7 @@ namespace WorkspacesEditor
 
         private void OnClosing(object sender, EventArgs e)
         {
+            etwTrace?.Dispose();
             cancellationToken.Dispose();
             App.Current.Shutdown();
         }

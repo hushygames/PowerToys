@@ -8,6 +8,7 @@ using AdvancedPaste.Helpers;
 using AdvancedPaste.Settings;
 using AdvancedPaste.ViewModels;
 using ManagedCommon;
+using Microsoft.PowerToys.Telemetry;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using WinUIEx;
@@ -19,12 +20,15 @@ namespace AdvancedPaste
     {
         private readonly WindowMessageMonitor _msgMonitor;
         private readonly IUserSettings _userSettings;
+        private ETWTrace _etwTrace = new ETWTrace();
 
         private bool _disposedValue;
 
         public MainWindow()
         {
             this.InitializeComponent();
+
+            _etwTrace.Start();
 
             _userSettings = App.GetService<IUserSettings>();
             var optionsViewModel = App.GetService<OptionsViewModel>();
@@ -85,6 +89,7 @@ namespace AdvancedPaste
             if (!_disposedValue)
             {
                 _msgMonitor?.Dispose();
+                _etwTrace?.Dispose();
 
                 _disposedValue = true;
             }

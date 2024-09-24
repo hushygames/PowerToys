@@ -2,6 +2,7 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 using System.Globalization;
+using Microsoft.PowerToys.Telemetry;
 
 namespace Microsoft.PowerToys.ThumbnailHandler.Stl
 {
@@ -16,6 +17,9 @@ namespace Microsoft.PowerToys.ThumbnailHandler.Stl
         public static void Main(string[] args)
         {
             ApplicationConfiguration.Initialize();
+            MessageBox.Show("ASDASDA");
+            ETWTrace etwTrace = new ETWTrace();
+            etwTrace.Start();
             if (args != null)
             {
                 if (args.Length == 2)
@@ -36,6 +40,8 @@ namespace Microsoft.PowerToys.ThumbnailHandler.Stl
                     MessageBox.Show("Gcode thumbnail - wrong number of args: " + args.Length.ToString(CultureInfo.InvariantCulture));
                 }
             }
+
+            etwTrace?.Dispose();
         }
     }
 }
