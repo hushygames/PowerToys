@@ -30,17 +30,10 @@ namespace Microsoft.PowerToys.Settings.UI
         public MainWindow(bool createHidden = false)
         {
             etwTrace = new ETWTrace();
-            int i = 0;
-            while (i < 3)
-            {
-                System.Threading.Thread.Sleep(2000);
-                i++;
-            }
+            etwTrace.Start();
 
             var bootTime = new System.Diagnostics.Stopwatch();
             bootTime.Start();
-
-            etwTrace.Start();
 
             App.ThemeService.ThemeChanged += OnThemeChanged;
             App.ThemeService.ApplyTheme();
