@@ -2,6 +2,7 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Diagnostics.Tracing;
 
 using Microsoft.PowerToys.Telemetry.Events;
@@ -38,6 +39,11 @@ namespace Microsoft.PowerToys.Telemetry
         public void WriteEvent<T>(T telemetryEvent)
             where T : EventBase, IEvent
         {
+            if (this.IsEnabled())
+            {
+                DataDiagnosticsSettings.GetEnabledValue();
+            }
+
             if (DataDiagnosticsSettings.GetEnabledValue())
             {
                 this.Write<T>(

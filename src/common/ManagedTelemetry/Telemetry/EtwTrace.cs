@@ -32,6 +32,16 @@ namespace Microsoft.PowerToys.Telemetry
         private bool started;
 #nullable enable
         private TraceEventSession? traceSession;
+
+        internal sealed class Lister : EventListener
+        {
+            public Lister()
+                : base()
+            {
+            }
+        }
+
+        private Lister? listener;
 #nullable disable
 
         /// <summary>
@@ -53,6 +63,9 @@ namespace Microsoft.PowerToys.Telemetry
             {
                 this.Start();
             }
+
+            listener = new Lister();
+            listener.EnableEvents(PowerToysTelemetry.Log, EventLevel.Error);
         }
 
         /// <inheritdoc/>
@@ -79,8 +92,11 @@ namespace Microsoft.PowerToys.Telemetry
                 string dateTimeNow = DateTime.Now.ToString("MM-d-yyy__H_mm_ss", CultureInfo.InvariantCulture);
                 this.sessionName = string.Format(CultureInfo.InvariantCulture, "{0}-{1}-{2}", executable, Environment.ProcessId, dateTimeNow);
                 this.etwFilePath = Path.Combine(etwFolderPath, $"{this.sessionName}.etl");
+
                 this.traceSession = new TraceEventSession(
-                    this.sessionName, this.etwFilePath, TraceEventSessionOptions.PrivateLogger | TraceEventSessionOptions.PrivateInProcLogger | TraceEventSessionOptions.Create);
+                    this.sessionName, this.etwFilePath, (TraceEventSessionOptions)(TraceEventSessionOptions.Create | TraceEventSessionOptions.PrivateLogger | TraceEventSessionOptions.PrivateInProcLogger));
+                TraceEventProviderOptions args = new TraceEventProviderOptions();
+
                 this.traceSession.EnableProvider(
                     PowerToysTelemetry.Log.Guid,
                     matchAnyKeywords: (ulong)TelemetryKeyword | (ulong)MeasuresKeyword | (ulong)CriticalDataKeyword);

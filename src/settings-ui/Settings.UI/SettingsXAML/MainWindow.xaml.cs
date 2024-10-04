@@ -259,6 +259,7 @@ namespace Microsoft.PowerToys.Settings.UI
 
             if (disposing)
             {
+                etwTrace?.Stop();
                 etwTrace?.Dispose();
             }
 

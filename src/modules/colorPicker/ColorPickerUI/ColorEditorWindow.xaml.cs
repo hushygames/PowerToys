@@ -6,6 +6,7 @@ using System;
 using System.Windows;
 
 using ColorPicker.Helpers;
+using ColorPickerUI;
 using Common.UI;
 using Wpf.Ui.Controls;
 
@@ -32,6 +33,7 @@ namespace ColorPicker
         {
             e.Cancel = true;
             _appStateHandler.EndUserSession();
+            (Application.Current as App).etwTrace?.Dispose();
         }
 
         protected override void OnSourceInitialized(EventArgs e)

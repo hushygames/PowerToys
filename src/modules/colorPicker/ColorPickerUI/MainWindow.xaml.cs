@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Interop;
 
 using ColorPicker.ViewModelContracts;
+using ColorPickerUI;
+using Microsoft.PowerToys.Telemetry;
 using Wpf.Ui.Controls;
 
 namespace ColorPicker
@@ -34,6 +36,7 @@ namespace ColorPicker
         {
             Closing -= MainWindow_Closing;
             Bootstrapper.Dispose();
+            (Application.Current as App).etwTrace?.Dispose();
         }
 
         private void MainWindowSourceInitialized(object sender, System.EventArgs e)
